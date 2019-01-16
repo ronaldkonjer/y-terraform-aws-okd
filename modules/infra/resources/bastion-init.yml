@@ -1,4 +1,5 @@
 #cloud-config
+locale: en_US.UTF-8 
 output: { all: "| tee -a /var/log/cloud-init-output.log" }
 write_files:
 -   content: ${platform_id_rsa}
@@ -36,8 +37,12 @@ runcmd:
  - pip install awscli --upgrade
  - pip install boto3 --upgrade
  - pip install boto --upgrade
+ - pip install passlib --upgrade
  - sh /root/arrocate-eip.sh
  - mkdir -p /home/${bastion_ssh_user}/.ssh
  - cp /root/platform_id_rsa /home/${bastion_ssh_user}/.ssh/id_rsa
  - chown ${bastion_ssh_user}:${bastion_ssh_user} /home/${bastion_ssh_user}/.ssh/id_rsa
  - touch /root/.provisioning-finished && chmod 644 /root/.provisioning-finished
+ - yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+ - sed -i -e "s/^enabled=1/enabled=0/" /etc/yum.repos.d/epel.repo
+ - yum install -y "@Development Tools" openssl-devel gcc libffi-devel httpd-tools java-1.8.0-openjdk-headless bind-utils

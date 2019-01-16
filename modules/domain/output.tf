@@ -9,3 +9,7 @@ output "public_certificate_key" {
 output "public_certificate_intermediate_pem" {
   value = "${element(concat(acme_certificate.platform_domain.*.issuer_pem, list("")), 0)}"
 }
+
+output "public_zone_id" {
+  value = "${data.aws_route53_zone.public.zone_id}"
+}

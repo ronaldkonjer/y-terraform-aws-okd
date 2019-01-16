@@ -8,11 +8,11 @@ use_community = true
 
 master_count = 1
 
-master_instance_type = "m4.large"
+master_instance_type = "t2.micro"
 
 compute_node_count = 1
 
-compute_node_instance_type = "m4.large"
+compute_node_instance_type = "t2.micro"
 
 operator_cidrs = ["0.0.0.0/0"]
 

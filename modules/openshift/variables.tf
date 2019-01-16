@@ -44,3 +44,6 @@ variable "public_certificate_key" {
 variable "public_certificate_intermediate_pem" {
   default = ""
 }
+
+variable "platform_vpc_id" {
+}

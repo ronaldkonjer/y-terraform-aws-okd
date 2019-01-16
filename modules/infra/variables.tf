@@ -27,7 +27,7 @@ variable "use_spot" {
 }
 
 variable "use_community" {
-  default = false
+  #default = false
 }
 
 variable "master_count" {
@@ -53,3 +53,4 @@ variable "infra_node_instance_type" {
 variable "compute_node_instance_type" {
   default = "m4.large"
 }
+

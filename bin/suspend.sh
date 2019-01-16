@@ -1,6 +1,8 @@
 #!/bin/bash
 
-asg_names="${TF_VAR_platform_name}-master ${TF_VAR_platform_name}-infra-node ${TF_VAR_platform_name}-compute-node"
+#asg_names="${TF_VAR_platform_name}-master ${TF_VAR_platform_name}-infra-node ${TF_VAR_platform_name}-compute-node"
+asg_names="okd-master okd-infra-node okd-compute-node"
+
 
 for asg_name in $asg_names; do
   aws autoscaling suspend-processes --auto-scaling-group-name ${asg_name} --scaling-processes Terminate

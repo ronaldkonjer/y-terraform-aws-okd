@@ -35,6 +35,7 @@ resource "aws_launch_template" "master" {
       "Role", "master,node",
       "openshift_node_group_name", "${var.infra_node_count > 0 ? "node-config-master" : "node-config-master-infra"}"
     )}"
+
   }
 
   user_data = "${base64encode(data.template_file.master.rendered)}"

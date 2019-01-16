@@ -1,0 +1,32 @@
+openshift_deployment_type: ${openshift_deployment_type}
+
+openshift_aws_clusterid: ${platform_name}
+
+openshift_aws_region: ${platform_aws_region}
+
+openshift_aws_create_vpc: false 
+
+openshift_aws_vpc_name: ${platform_vpc_id}
+
+openshift_aws_subnet_az: ["${var.private_subnet_ids}"]
+
+openshift_aws_create_security_groups: false 
+
+openshift_aws_ssh_key_name: ${platform_name}
+
+openshift_aws_base_ami: ${base_image_id}
+
+openshift_aws_create_s3: False 
+
+openshift_aws_build_ami_group: default 
+
+openshift_aws_vpc: 
+  name: "{{ openshift_aws_vpc_name }}"
+  cidr: 172.18.0.0/16
+  subnets:
+    us-east-1:
+    - cidr: 172.18.0.0/20
+      az: "us-east-1d"
+
+container_runtime_docker_storage_type: overlay2 
+container_runtime_docker_storage_setup_device: /dev/xvdb 

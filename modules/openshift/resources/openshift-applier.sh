@@ -9,4 +9,4 @@ export AWS_REGION="${platform_aws_region}"
 
 ocinventory -cluster "${platform_name}" -inventory $HOME/template-inventory.yaml > $HOME/inventory.yaml
 
-ansible-playbook -i $HOME/inventory.yaml openshift-applier/openshift-policies/config.yml || { echo "Error on applier" ; exit 1 ; }
+ansible-playbook -i $HOME/inventory.yaml openshift-applier/openshift-policies/config.yml -vvv || { echo "Error on applier" ; exit 1 ; }

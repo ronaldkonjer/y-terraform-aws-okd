@@ -5,3 +5,17 @@ runcmd:
  - curl -kL https://bootstrap.pypa.io/get-pip.py | python
  - pip install awscli --upgrade
  - touch /root/.provisioning-finished && chmod 644 /root/.provisioning-finished
+ # Install packages required to setup OpenShift.
+ - yum install -y wget git net-tools bind-utils iptables-services bridge-utils bash-completion httpd-tools kexec-tools sos psacct python-passlib NetworkManager
+#yum install -y wget git net-tools bind-utils iptables-services bridge-utils bash-completion httpd-tools
+ - yum update -y
+
+# Setup and Synchronize time
+ - yum install -y ntpdate ntp
+ - chkconfig ntpd on
+ - service ntpd start
+ - timedatectl set-timezone Europe/Amsterdam
+ - timedatectl set-local-rtc true
+ - timedatectl set-ntp yes
+ - systemctl restart systemd-timedated.service
+

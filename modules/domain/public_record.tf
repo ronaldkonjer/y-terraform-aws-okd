@@ -1,5 +1,5 @@
 resource "aws_route53_record" "master_public" {
-  zone_id = "${data.aws_route53_zone.public.zone_id}"
+  zone_id = "${var.route53_zone_public_id}"
   name    = "${var.platform_domain}"
   type    = "A"
 
@@ -11,7 +11,7 @@ resource "aws_route53_record" "master_public" {
 }
 
 resource "aws_route53_record" "public" {
-  zone_id = "${data.aws_route53_zone.public.zone_id}"
+  zone_id = "${var.route53_zone_public_id}"
   name    = "*.${var.platform_domain}"
   type    = "A"
 

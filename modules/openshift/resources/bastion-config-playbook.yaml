@@ -35,6 +35,7 @@
       when: ansible_distribution in ['CentOS']
     - name: download ocinventory
       get_url:
+        #url: https://github.com/ronaldkonjer/openshift-inventory-utils/releases/download/v0.2/ocinventory_unix
         url: https://github.com/literalice/openshift-inventory-utils/releases/download/v0.2/ocinventory_unix
         dest: /usr/local/bin/ocinventory
         mode: 0711
