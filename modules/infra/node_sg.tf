@@ -24,11 +24,14 @@ resource "aws_security_group" "node" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = "${map(
+  tags = "${merge(map(
     "kubernetes.io/cluster/${var.platform_name}", "owned",
-    "Name", "${var.platform_name}-node",
+    "Type", "${var.platform_name}-node",
     "Role", "node",
-    )}"
+    ),
+    "${module.label.tags}"
+    )
+  }"
 
   vpc_id = "${data.aws_vpc.platform.id}"
 }

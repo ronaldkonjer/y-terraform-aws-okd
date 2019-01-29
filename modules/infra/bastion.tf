@@ -28,11 +28,14 @@ resource "aws_launch_template" "bastion" {
   tag_specifications {
     resource_type = "instance"
 
-    tags = "${map(
+    tags = "${merge(map(
       "kubernetes.io/cluster/${var.platform_name}", "owned",
-      "Name", "${var.platform_name}-bastion",
+      "Type", "${var.platform_name}-bastion",
       "Role", "bastion"
-    )}"
+    ),
+    "${module.label.tags}"
+    )
+    }"
   }
 
   user_data = "${base64encode(data.template_file.bastion_init.rendered)}"

@@ -1,9 +1,12 @@
 resource "aws_eip" "bastion" {
   vpc = true
 
-  tags = "${map(
+  tags = "${merge(map(
     "kubernetes.io/cluster/${var.platform_name}", "owned",
-    "Name", "${var.platform_name}-bastion",
+    "Type", "${var.platform_name}-bastion",
     "Role", "bastion"
-  )}"
+    ),
+    "${module.label.tags}"
+    )
+  }"
 }

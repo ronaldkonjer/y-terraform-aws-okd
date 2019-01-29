@@ -1,18 +1,7 @@
-module "label" {
-  source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.3.5"
-  namespace  = "${var.namespace}"
-  name       = "${var.name}"
-  stage      = "${var.stage}"
-  delimiter  = "${var.delimiter}"
-  attributes = "${var.attributes}"
-  tags       = "${var.tags}"
-  enabled    = "${var.enabled}"
-}
-
 resource "aws_security_group" "default" {
   count       = "${var.enabled == "true" ? 1 : 0}"
   name        = "${module.label.id}"
-  description = "Allow inbound traffic from Security Groups and CIDRs"
+  description = "Managed by Terraform"
   vpc_id      = "${var.vpc_id}"
 
   ingress {
@@ -36,7 +25,13 @@ resource "aws_security_group" "default" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = "${module.label.tags}"
+  tags = "${merge(
+    map(
+    "Type", "${module.label.name}-rds-sg"
+    ),
+    "${module.label.tags}"
+    )
+  }"
 }
 
 resource "aws_rds_cluster" "default" {
@@ -59,19 +54,26 @@ resource "aws_rds_cluster" "default" {
   db_subnet_group_name                = "${aws_db_subnet_group.default.name}"
   db_cluster_parameter_group_name     = "${aws_rds_cluster_parameter_group.default.name}"
   iam_database_authentication_enabled = "${var.iam_database_authentication_enabled}"
-  tags                                = "${module.label.tags}"
   engine                              = "${var.engine}"
   engine_version                      = "${var.engine_version}"
   engine_mode                         = "${var.engine_mode}"
   scaling_configuration               = "${var.scaling_configuration}"
   replication_source_identifier       = "${var.replication_source_identifier}"
 
+  tags = "${merge(
+    map(
+    "Type", "${module.label.name}-rds-cluster"
+    ),
+    "${module.label.tags}"
+    )
+  }"
+
   s3_import {
     source_engine         = "mysql"
     source_engine_version = "${var.engine_version}"
     bucket_name           = "sliceoflife-yhybris-media"
     bucket_prefix         = "backups"
-    ingestion_role        = "arn:aws:iam::158613094363:user/s3-user"
+    ingestion_role        = "arn:aws:iam::158613094363:role/service-role/RestoreDbFromS3"
   }
 }
 
@@ -88,39 +90,67 @@ resource "aws_rds_cluster_instance" "default" {
   db_subnet_group_name            = "${aws_db_subnet_group.default.name}"
   db_parameter_group_name         = "${aws_db_parameter_group.default.name}"
   publicly_accessible             = "${var.publicly_accessible}"
-  tags                            = "${module.label.tags}"
   engine                          = "${var.engine}"
   engine_version                  = "${var.engine_version}"
   monitoring_interval             = "${var.rds_monitoring_interval}"
   monitoring_role_arn             = "${var.rds_monitoring_role_arn}"
   performance_insights_enabled    = "${var.performance_insights_enabled}"
   performance_insights_kms_key_id = "${var.performance_insights_kms_key_id}"
+
+  tags = "${merge(
+    map(
+    "Type", "${module.label.name}-rds-cluster-instance"
+    ),
+    "${module.label.tags}"
+    )
+  }"
 }
 
 resource "aws_db_subnet_group" "default" {
   count       = "${var.enabled == "true" ? 1 : 0}"
   name        = "${module.label.id}"
-  description = "Allowed subnets for DB cluster instances"
+  description = "Managed by Terraform"
   subnet_ids  = ["${var.subnets}"]
-  tags        = "${module.label.tags}"
+
+  tags = "${merge(
+    map(
+    "Type", "${module.label.name}-rds-subnet-group"
+    ),
+    "${module.label.tags}"
+    )
+  }"
 }
 
 resource "aws_rds_cluster_parameter_group" "default" {
   count       = "${var.enabled == "true" ? 1 : 0}"
   name        = "${module.label.id}"
-  description = "DB cluster parameter group"
+  description = "Managed by Terraform"
   family      = "${var.cluster_family}"
   parameter   = ["${var.cluster_parameters}"]
-  tags        = "${module.label.tags}"
+
+  tags = "${merge(
+    map(
+    "Type", "${module.label.name}-rds-cluster-para-group"
+    ),
+    "${module.label.tags}"
+    )
+  }"
 }
 
 resource "aws_db_parameter_group" "default" {
   count       = "${var.enabled == "true" ? 1 : 0}"
   name        = "${module.label.id}"
-  description = "DB instance parameter group"
+  description = "Managed by Terraform"
   family      = "${var.cluster_family}"
   parameter   = ["${var.instance_parameters}"]
-  tags        = "${module.label.tags}"
+
+  tags = "${merge(
+    map(
+    "Type", "${module.label.name}-rds-parameter-group"
+    ),
+    "${module.label.tags}"
+    )
+  }"
 }
 
 module "dns_master" {

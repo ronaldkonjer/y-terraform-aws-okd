@@ -1,3 +1,11 @@
+variable "region" {
+  description = "The region to deploy the cluster in, e.g: eu-west-1."
+}
+
+variable "profile" {
+  description = "The .aws credentials profile to use to connect to AWS"
+}
+
 variable "platform_name" {}
 
 variable "rh_subscription_pool_id" {
@@ -45,5 +53,4 @@ variable "public_certificate_intermediate_pem" {
   default = ""
 }
 
-variable "platform_vpc_id" {
-}
+variable "platform_vpc_id" {}

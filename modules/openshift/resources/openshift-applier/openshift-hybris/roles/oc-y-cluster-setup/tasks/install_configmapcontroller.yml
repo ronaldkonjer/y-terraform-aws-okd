@@ -1,0 +1,30 @@
+---
+# create image stream
+- name: create a configmapcontroller dc imagestream
+  oc_image:
+    state: present
+    image_name: configmapcontroller
+    image_tag: latest
+    registry_url: fabric8
+    namespace: "{{ namespace }}"
+  register: imageout
+
+# create configmapcontroller deploymentconfig
+- name: Set configmapcontroller dc template
+  template:
+    src: configmapcontroller.j2
+    dest: "{{ tempdir }}/templates/configmapcontroller-{{ namespace }}.yaml"
+  vars:
+    namespace: "{{ namespace }}"
+
+- name: Set configmapcontroller dc
+  oc_obj:
+    state: present
+    name: "configmapcontroller"
+    namespace: "{{ namespace }}"
+    kind: DeploymentConfig
+    files:
+    - "{{ tempdir }}/templates/configmapcontroller-{{ namespace }}.yaml"
+    delete_after: true
+
+

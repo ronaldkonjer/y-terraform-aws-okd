@@ -1,0 +1,3 @@
+- import_tasks: check_vars.yml tags=ldap-groups
+#- import_tasks: create_ldap_group_config.yml tags=ldap-groups, ldap-groups:create-config
+- import_tasks: sync_ldap_groups.yml tags=ldap-groups,ldap-groups:sync

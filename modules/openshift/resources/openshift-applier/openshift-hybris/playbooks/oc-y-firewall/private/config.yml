@@ -1,0 +1,28 @@
+- name: OpenShift Compare Group Loadbalancer Start
+  hosts: all
+  gather_facts: false
+  tasks:
+  - name: Set Compare Group Loadbalancer 'In Progress'
+    run_once: true
+    set_stats:
+      data:
+        installer_phase_cg_setup:
+          status: "In Progress"
+          start: "{{ lookup('pipe', 'date +%Y%m%d%H%M%SZ') }}"
+
+- name: OpenShift Compare Group Loadbalancer
+  hosts: all
+  roles:
+  - { role: oc_cg_roles/oc-cg-firewall, tags: 'firewall' }
+
+- name: OpenShift Compare Group Loadbalancer End
+  hosts: all
+  gather_facts: false
+  tasks:
+  - name: Set Compare Group Loadbalancer 'Complete'
+    run_once: true
+    set_stats:
+      data:
+        installer_phase_cg_setup:
+          status: "Complete"
+          end: "{{ lookup('pipe', 'date +%Y%m%d%H%M%SZ') }}"

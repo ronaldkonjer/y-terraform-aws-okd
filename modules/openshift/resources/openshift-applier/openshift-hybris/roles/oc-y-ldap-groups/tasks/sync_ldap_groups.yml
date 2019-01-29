@@ -1,0 +1,57 @@
+---
+# tasks file for oc-cg-ldap-groups
+- name: Check that the ldap dir exists
+  stat:
+    path: "{{ oc_cg_ldap_groups_path }}"
+  register: result
+
+- name: Sync ldap groups
+  command: >
+    {{ openshift_client_binary }} adm groups sync --whitelist="{{ oc_cg_ldap_groups_path }}/{{ oc_cg_ldap_groups_whitelist_filename }}" --sync-config="{{ oc_cg_ldap_groups_path }}/{{ oc_cg_ldap_groups_config_filename }}" --confirm
+  when: result.stat.exists == true and result.stat.isdir == true
+
+- name: Configure LDAP sync cron job
+  cron:
+    name: "Synchronize OpenShift groups with LDAP"
+    user: root
+    cron_file: openshift_ldapsync
+    special_time: daily
+    job: '{{ openshift_client_binary }} adm groups sync --whitelist="{{ oc_cg_ldap_groups_path }}/{{ oc_cg_ldap_groups_whitelist_filename }}" --sync-config="{{ oc_cg_ldap_groups_path }}/{{ oc_cg_ldap_groups_config_filename }}" --confirm >/dev/null'
+
+- name: Assign cluster policy to ldap group openshift-admin
+  command: >
+    {{ openshift_client_binary }} adm policy add-cluster-role-to-group cluster-admin openshift-admin
+  when: result.stat.exists == true and result.stat.isdir == true
+
+
+- name: Assign policy to ldap group openshift stage
+  command: >
+    {{ openshift_client_binary }} adm policy add-role-to-group admin openshift -n stage-cg-front
+  when: result.stat.exists == true and result.stat.isdir == true
+
+- name: Assign policy to ldap group openshift prod
+  command: >
+    {{ openshift_client_binary }} adm policy add-role-to-group admin openshift -n prod-cg-front
+  when: result.stat.exists == true and result.stat.isdir == true
+
+# Assign admin policy to ldap openshift-admin group
+- name: Assign edit policy to ldap openshift-admin group
+  oc_adm_policy_group:
+    state: present
+    resource_kind: cluster-role
+    resource_name: cluster-admin
+    group: "{{ oc_cg_ldap_groups_admin_groupname }}"
+  when: result.stat.exists == true and result.stat.isdir == true
+
+- debug:
+    msg: "openshift_ldap_group_config_file does not exist or is not a directory"
+  when: result.stat.exists == false or result.stat.isdir == false
+
+- name: Restart daemons
+  command: /bin/true
+  notify:
+    - restart master api
+    - restart master controllers
+  ignore_errors: true
+  when: result.stat.exists == true and result.stat.isdir == true
+

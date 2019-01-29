@@ -5,9 +5,13 @@ resource "aws_route53_zone" "private" {
     vpc_id = "${data.aws_vpc.platform.id}"
   }
 
-  tags = "${map(
-    "kubernetes.io/cluster/${var.platform_name}", "owned"
-  )}"
+  # tags = "${merge(map(
+  #   "kubernetes.io/cluster/${var.platform_name}", "owned"
+  #   "Type", "${var.platform_name}-route53-private"
+  # ),
+  #   "${module.label.tags}"
+  #   )
+  # }"
 }
 
 resource "aws_route53_record" "master" {

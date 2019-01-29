@@ -96,9 +96,9 @@ ${openshift_deployment_type == "openshift-enterprise" ? "#" : ""}    - {id: 'cen
     #openshift_logging_es5_techpreview: false
     #openshift_logging_es_pvc_dynamic: true
     #openshift_logging_es_pvc_size: 500G
-    #openshift_logging_es_cluster_size: 3
-    #openshift_logging_es_ops_memory_limit: 4Gi
-    #openshift_logging_es_memory_limit: 4Gi
+    openshift_logging_es_cluster_size: 2
+    openshift_logging_es_ops_memory_limit: 4Gi
+    openshift_logging_es_memory_limit: 4Gi
     #openshift_logging_es_nodeselector: {'region': 'infra'}
     #openshift_logging_use_ops: true
     

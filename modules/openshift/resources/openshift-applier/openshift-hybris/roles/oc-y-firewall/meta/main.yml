@@ -1,0 +1,4 @@
+---
+dependencies:
+- role: lib_utils
+- role: openshift_facts

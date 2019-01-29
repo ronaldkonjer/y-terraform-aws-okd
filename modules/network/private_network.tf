@@ -13,19 +13,24 @@ resource "aws_subnet" "private" {
 
   map_public_ip_on_launch = true
 
-  tags = "${map(
-    "kubernetes.io/cluster/${var.platform_name}", "owned",
-    "Name", "${var.platform_name}-private-${count.index}"
-  )}"
+  tags = "${merge(
+    map(
+      "kubernetes.io/cluster/${var.platform_name}", "owned",
+      "Type", "${var.platform_name}-private-${count.index}"
+    ),
+      "${module.label.tags}"
+    )}"
 }
 
 resource "aws_route_table" "private" {
   vpc_id = "${aws_vpc.platform.id}"
 
-  tags = "${map(
+  tags = "${merge(map(
     "kubernetes.io/cluster/${var.platform_name}", "owned",
-    "Name", "${var.platform_name}-private-rt"
-  )}"
+    "Type", "${var.platform_name}-private-rt"
+  ),
+    "${module.label.tags}"
+    )}"
 }
 
 # Adds Egress Route to RouteTable

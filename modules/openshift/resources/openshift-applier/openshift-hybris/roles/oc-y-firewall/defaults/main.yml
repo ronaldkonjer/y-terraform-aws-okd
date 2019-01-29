@@ -1,0 +1,9 @@
+---
+openshift_os_firewall_enabled: "{{ os_firewall_enabled | default(True) }}"
+openshift_os_firewall_use_firewalld: "{{ os_firewall_use_firewalld | default(False) }}"
+
+openshift_os_firewall_allow:
+- service: OS_FIREWALL_ALLOW
+  port: "1936/tcp"
+
+openshift_os_firewall_deny: []

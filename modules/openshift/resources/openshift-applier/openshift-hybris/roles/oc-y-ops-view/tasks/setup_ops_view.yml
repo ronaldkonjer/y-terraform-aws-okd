@@ -1,0 +1,91 @@
+# namespace
+# oc new-project ocp-ops-view
+- name: Add Openshift Operations View project
+  oc_project:
+    state: present
+    name: "{{ oc_cg_ops_view_project_namespace }}"
+    display_name: "{{ oc_cg_ops_view_project_displayname }}"
+
+# serviceaccount
+# oc create sa kube-ops-view
+- name: Create kube-ops-view serviceaccount
+  oc_serviceaccount:
+    state: present
+    name: "{{ oc_cg_ops_view_serviceaccount_name }}"
+    namespace: "{{ oc_cg_ops_view_project_namespace }}"
+  changed_when: no
+
+# create edit role for deploy user serviceaccount
+# oc adm policy add-scc-to-user anyuid -z kube-ops-view
+- name: Set edit permissions for deploy user
+  oc_adm_policy_user:
+    state: present
+    namespace: "{{ oc_cg_ops_view_project_namespace }}"
+    resource_kind: scc
+    resource_name: anyuid
+    user: "system:serviceaccount:{{ oc_cg_ops_view_project_namespace }}:{{ oc_cg_ops_view_serviceaccount_name }}"
+
+# create edit role for deploy user serviceaccount
+# oc adm policy add-cluster-role-to-user cluster-admin system:serviceaccount:ocp-ops-view:kube-ops-view
+- name: Set edit permissions for deploy user
+  oc_adm_policy_user:
+    state: present
+    namespace: "{{ oc_cg_ops_view_project_namespace }}"
+    resource_kind: cluster-role
+    resource_name: cluster-admin
+    user: "system:serviceaccount:{{ oc_cg_ops_view_project_namespace }}:{{ oc_cg_ops_view_serviceaccount_name }}"
+
+# allow passing in a tempdir
+- name: Create temp directory for doing work in
+  command: mktemp -d /tmp/openshift-ops-view-ansible-XXXXXX
+  register: mktemp
+  changed_when: False
+
+- set_fact:
+    tempdir: "{{ mktemp.stdout }}"
+
+- name: create temporary build directory
+  tempfile:
+    state: directory
+    suffix: build
+
+# download kube-ops-view
+# oc apply -f https://raw.githubusercontent.com/raffaelespazzoli/kube-ops-view/ocp/deploy-openshift/kube-ops-view.yaml
+- name: Download kube-ops-view
+  get_url:
+    url: "{{oc_cg_ops_view_project_repos_url}}"
+    dest: "{{ mktemp.stdout }}/{{ oc_cg_ops_view_serviceaccount_name }}.yaml"
+    mode: 0440
+
+- slurp:
+    src: "{{item}}"
+  register: object_defs
+  with_items: "{{ mktemp.stdout }}/{{ oc_cg_ops_view_serviceaccount_name }}.yaml"
+  changed_when: no
+
+- name: Check if service needs to be exposed
+  command: >
+    {{ openshift_client_binary }} get routes -n {{ oc_cg_ops_view_project_namespace }}
+  register: command_output
+
+- debug:
+    msg: "The route exists so do not create it again - {{command_output.stdout}}"
+
+- name: Create objects
+  command: >
+    {{ openshift_client_binary }} apply -f {{ mktemp.stdout }}/{{ oc_cg_ops_view_serviceaccount_name }}.yaml -n {{ oc_cg_ops_view_project_namespace }}
+  when: not ansible_check_mode
+  changed_when: False
+
+# expose kube-ops-view service when it does not exist yet
+- name: Expose kube-ops-view
+  command: >
+    {{ openshift_client_binary }} expose svc {{ oc_cg_ops_view_serviceaccount_name }} -n {{ oc_cg_ops_view_project_namespace }}
+  when: not command_output.stdout | search('kube-ops-view')
+  changed_when: False
+
+- name: Delete temp directory
+  file:
+    name: "{{ tempdir }}"
+    state: absent
+  changed_when: False

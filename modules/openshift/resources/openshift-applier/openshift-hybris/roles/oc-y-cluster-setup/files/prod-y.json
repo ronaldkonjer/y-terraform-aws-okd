@@ -1,0 +1,8 @@
+{
+  "parameter": [
+	{
+	  "name": "env",
+	  "value": "prod-cg-front"
+	}
+  ]
+}

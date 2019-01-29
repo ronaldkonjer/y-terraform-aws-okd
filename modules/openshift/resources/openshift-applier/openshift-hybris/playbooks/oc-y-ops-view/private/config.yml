@@ -1,0 +1,28 @@
+- name: OpenShift Ops View Project Setup Start
+  hosts: all
+  gather_facts: false
+  tasks:
+  - name: Set Ops View Project Setup 'In Progress'
+    run_once: true
+    set_stats:
+      data:
+        installer_phase_cg_setup:
+          status: "In Progress"
+          start: "{{ lookup('pipe', 'date +%Y%m%d%H%M%SZ') }}"
+
+- name: OpenShift Ops View Project Setup
+  hosts: oo_first_master
+  roles:
+  - { role: oc_cg_roles/oc-cg-ops-view, tags: 'ops-view' }
+
+- name: OpenShift Ops View Project Setup End
+  hosts: all
+  gather_facts: false
+  tasks:
+  - name: Set Ops View Project Setup 'Complete'
+    run_once: true
+    set_stats:
+      data:
+        installer_phase_cg_setup:
+          status: "Complete"
+          end: "{{ lookup('pipe', 'date +%Y%m%d%H%M%SZ') }}"

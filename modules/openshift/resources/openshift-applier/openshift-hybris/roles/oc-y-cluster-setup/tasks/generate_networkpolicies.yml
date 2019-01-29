@@ -1,0 +1,17 @@
+# create secret
+- name: Set default deny networkpolicy template
+  template:
+    src: np_default_deny.j2
+    dest: "{{ tempdir }}/templates/{{oc_cg_cluster_setup_networkpolicy_default_deny_filename}}_{{ namespace }}.yaml"
+  vars:
+    namespace: "{{ namespace }}"
+
+- name: Set default deny networkpolicy
+  oc_obj:
+    state: present
+    name: "{{ oc_cg_cluster_setup_networkpolicy_default_deny_name }}"
+    namespace: "{{ namespace }}"
+    kind: NetworkPolicy
+    files:
+    - "{{ tempdir }}/templates/{{oc_cg_cluster_setup_networkpolicy_default_deny_filename}}_{{ namespace }}.yaml"
+    delete_after: true

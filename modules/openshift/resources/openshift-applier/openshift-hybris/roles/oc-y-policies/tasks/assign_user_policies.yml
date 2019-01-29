@@ -1,0 +1,38 @@
+- debug:
+    msg: "{{ openshift_cluster_admin_users }} does exist"
+
+- name: cluster-admin
+  oc_adm_policy_user:
+    user: "{{ item }}"
+    resource_kind: cluster-role
+    resource_name: cluster-admin
+    state: present
+  with_items:
+  - "{{ openshift_cluster_admin_users }}"
+  when: openshift_cluster_admin_users is defined
+
+- debug:
+    msg: "{{ openshift_view_role_users }} does exist"
+
+- name: build-role-stage
+  oc_adm_policy_user:
+    user: "{{ item }}"
+    resource_kind: role
+    resource_name: edit
+    namespace: stage-cg-front
+    state: present
+  with_items:
+  - "{{ openshift_view_role_users }}"
+  when: openshift_view_role_users is defined
+
+- name: build-role-prod
+  oc_adm_policy_user:
+    user: "{{ item }}"
+    resource_kind: role
+    resource_name: edit
+    namespace: prod-cg-front
+    state: present
+  with_items:
+  - "{{ openshift_view_role_users }}"
+  when: openshift_view_role_users is defined
+

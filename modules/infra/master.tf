@@ -29,13 +29,15 @@ resource "aws_launch_template" "master" {
   tag_specifications {
     resource_type = "instance"
 
-    tags = "${map(
+    tags = "${merge(map(
       "kubernetes.io/cluster/${var.platform_name}", "owned",
-      "Name", "${var.platform_name}-master",
+      "Type", "${var.platform_name}-master",
       "Role", "master,node",
       "openshift_node_group_name", "${var.infra_node_count > 0 ? "node-config-master" : "node-config-master-infra"}"
-    )}"
-
+    ),
+    "${module.label.tags}"
+    )
+  }"
   }
 
   user_data = "${base64encode(data.template_file.master.rendered)}"

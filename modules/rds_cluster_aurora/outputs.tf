@@ -42,3 +42,8 @@ output "replicas_host" {
   value       = "${module.dns_replicas.hostname}"
   description = "Replicas hostname"
 }
+
+output "rds_security_group" {
+  #value = "${element(aws_security_group.rds.id, 0)}"
+  value = "${element(concat(aws_security_group.default.*.id, list("")), 0)}"
+}

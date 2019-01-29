@@ -11,19 +11,24 @@ resource "aws_subnet" "public" {
   cidr_block              = "${cidrsubnet(aws_vpc.platform.cidr_block, 4, 8 + count.index)}"
   map_public_ip_on_launch = true
 
-  tags = "${map(
-    "kubernetes.io/cluster/${var.platform_name}", "owned",
-    "Name", "${var.platform_name}-public-${count.index}"
-  )}"
+  tags = "${merge(
+    map(
+      "kubernetes.io/cluster/${var.platform_name}", "owned",
+      "Type", "${var.platform_name}-public-${count.index}"
+    ),
+    "${module.label.tags}"
+    )}"
 }
 
 # Public access to the router
 resource "aws_internet_gateway" "public_gw" {
   vpc_id = "${aws_vpc.platform.id}"
 
-  tags = "${map(
+  tags = "${merge(map(
     "kubernetes.io/cluster/${var.platform_name}", "owned",
-    "Name", "${var.platform_name}-public-gw"
+    "Type", "${var.platform_name}-public-gw"
+  ),
+    "${module.label.tags}"
   )}"
 }
 
@@ -32,10 +37,13 @@ resource "aws_internet_gateway" "public_gw" {
 resource "aws_route_table" "public" {
   vpc_id = "${aws_vpc.platform.id}"
 
-  tags = "${map(
+  tags = "${merge(
+    map(
     "kubernetes.io/cluster/${var.platform_name}", "owned",
-    "Name", "${var.platform_name}-public-rt"
-  )}"
+    "Type", "${var.platform_name}-public-rt"
+    ),
+    "${module.label.tags}"
+    )}"
 }
 
 resource "aws_route" "public_internet" {

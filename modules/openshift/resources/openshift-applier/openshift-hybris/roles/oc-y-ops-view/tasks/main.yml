@@ -1,0 +1,2 @@
+- import_tasks: check_vars.yml tags=ops-view
+- import_tasks: setup_ops_view.yml tags=ops-view,ops-view:setup

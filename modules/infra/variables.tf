@@ -1,3 +1,6 @@
+variable "region" {}
+variable "profile" {}
+
 variable "platform_name" {}
 
 variable "platform_vpc_id" {}
@@ -54,3 +57,40 @@ variable "compute_node_instance_type" {
   default = "m4.large"
 }
 
+variable "namespace" {
+  type        = "string"
+  description = "Namespace (e.g. `eg` or `cp`)"
+}
+
+variable "stage" {
+  type        = "string"
+  description = "Stage (e.g. `prod`, `dev`, `staging`)"
+}
+
+variable "name" {
+  type        = "string"
+  description = "Name of the application"
+}
+
+variable "delimiter" {
+  type        = "string"
+  default     = "-"
+  description = "Delimiter to be used between `name`, `namespace`, `stage` and `attributes`"
+}
+
+variable "enabled" {
+  description = "Set to false to prevent the module from creating any resources"
+  default     = "true"
+}
+
+variable "attributes" {
+  type        = "list"
+  default     = []
+  description = "Additional attributes (e.g. `1`)"
+}
+
+variable "tags" {
+  type        = "map"
+  default     = {}
+  description = "Additional tags (e.g. map(`BusinessUnit`,`XYZ`)"
+}

@@ -23,6 +23,8 @@ output "platform_public_ip_set" {
   value = "${data.dns_a_record_set.platform_public_ip_set.addrs}"
 }
 
-output "rds_security_group" {
-  value = "${element(aws_security_group.rds.id, 0)}"
-}
+# output "rds_security_group" {
+#   #value = "${element(aws_security_group.rds.id, 0)}"
+#   value = "${element(concat(aws_security_group.rds.*.id, list("")), 0)}"
+# }
+

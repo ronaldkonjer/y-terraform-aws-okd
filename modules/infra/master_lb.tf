@@ -25,7 +25,11 @@ resource "aws_elb" "master" {
   connection_draining         = true
   connection_draining_timeout = 180
 
-  tags = "${map(
+  tags = "${merge(map(
     "kubernetes.io/cluster/${var.platform_name}", "owned",
-    "Name", "${var.platform_name}-master")}"
+    "Type", "${var.platform_name}-master"
+   ),
+    "${module.label.tags}"
+    )
+  }"
 }

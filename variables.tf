@@ -1,13 +1,48 @@
-# variable "region" {
-#   description = "The region to deploy the cluster in, e.g: eu-west-1."
-# }
+variable "region" {
+  description = "The region to deploy the cluster in, e.g: eu-west-1."
+}
 
-# variable "user_secret_profile" {
-#   description = "The .aws credentials profile to use to connect to AWS"
-# }
+variable "user_secret_profile" {
+  description = "The .aws credentials profile to use to connect to AWS"
+}
 
 variable "platform_name" {
   description = "The name of the cluster that is used for tagging some resources"
+}
+
+variable "stage" {
+  type        = "string"
+  description = "Stage (e.g. `prod`, `dev`, `staging`)"
+  default     = "dev"
+}
+
+variable "namespace" {
+  type        = "string"
+  description = "Namespace (e.g. `eg` or `cp`)"
+  default     = "default"
+}
+
+variable "delimiter" {
+  type        = "string"
+  default     = "-"
+  description = "Delimiter to be used between `name`, `namespace`, `stage` and `attributes`"
+}
+
+variable "enabled" {
+  description = "Set to false to prevent the module from creating any resources"
+  default     = "true"
+}
+
+variable "attributes" {
+  type        = "list"
+  default     = []
+  description = "Additional attributes (e.g. `1`)"
+}
+
+variable "valtags" {
+  type        = "map"
+  default     = {}
+  description = "Additional tags (e.g. map(`BusinessUnit`,`XYZ`)"
 }
 
 variable "operator_cidrs" {

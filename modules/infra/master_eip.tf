@@ -3,9 +3,12 @@ resource "aws_eip" "master" {
 
   vpc = true
 
-  tags = "${map(
+  tags = "${merge(map(
     "kubernetes.io/cluster/${var.platform_name}", "owned",
-    "Name", "${var.platform_name}-master",
+    "Type", "${var.platform_name}-master",
     "Role", "master"
-  )}"
+  ),
+    "${module.label.tags}"
+    )
+  }"
 }

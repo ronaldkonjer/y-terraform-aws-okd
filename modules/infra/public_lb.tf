@@ -5,10 +5,13 @@ resource "aws_lb" "public" {
   subnets                          = ["${var.public_subnet_ids}"]
   enable_cross_zone_load_balancing = true
 
-  tags = "${map(
+  tags = "${merge(map(
     "kubernetes.io/cluster/${var.platform_name}", "owned",
-    "Name", "${var.platform_name}-public"
-  )}"
+    "Type", "${var.platform_name}-public"
+  ),
+    "${module.label.tags}"
+    )
+  }"
 }
 
 data "dns_a_record_set" "platform_public_ip_set" {

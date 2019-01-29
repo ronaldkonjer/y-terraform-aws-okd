@@ -25,10 +25,13 @@ resource "aws_security_group" "public" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  tags = "${map(
+  tags = "${merge(map(
     "kubernetes.io/cluster/${var.platform_name}", "owned",
-    "Name", "${var.platform_name}-public"
-  )}"
+    "Type", "${var.platform_name}-public"
+  ),
+    "${module.label.tags}"
+    )
+  }"
 
   vpc_id = "${data.aws_vpc.platform.id}"
 }

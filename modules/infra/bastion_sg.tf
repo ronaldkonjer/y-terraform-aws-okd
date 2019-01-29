@@ -16,11 +16,14 @@ resource "aws_security_group" "bastion" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = "${map(
+  tags = "${merge(map(
     "kubernetes.io/cluster/${var.platform_name}", "owned",
-    "Name", "${var.platform_name}-bastion",
+    "Type", "${var.platform_name}-bastion",
     "Role", "bastion"
-  )}"
+  ),
+    "${module.label.tags}"
+    )
+  }"
 
   vpc_id = "${data.aws_vpc.platform.id}"
 }

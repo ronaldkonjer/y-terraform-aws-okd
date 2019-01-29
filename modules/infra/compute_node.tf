@@ -24,12 +24,15 @@ resource "aws_launch_template" "compute_node" {
   tag_specifications {
     resource_type = "instance"
 
-    tags = "${map(
+    tags = "${merge(map(
       "kubernetes.io/cluster/${var.platform_name}", "owned",
-      "Name", "${var.platform_name}-compute_node",
+      "Type", "${var.platform_name}-compute_node",
       "Role", "node",
       "openshift_node_group_name", "node-config-compute"
-    )}"
+    ),
+    "${module.label.tags}"
+    )
+  }"
   }
 
   vpc_security_group_ids = ["${aws_security_group.node.id}"]

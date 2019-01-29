@@ -1,0 +1,4 @@
+---
+# defaults file for oc-cg-policies
+openshift_cluster_admin_users: [cg_admin, cg_rescue]
+openshift_view_role_users: cg_build
