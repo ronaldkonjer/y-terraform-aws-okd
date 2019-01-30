@@ -57,15 +57,15 @@ install: domain openshift
 
 network: 
 	@echo "Builds network for OpenShift in $(ENV)"
-	@terraform apply -target module.network -var-file workspace-variables/$(ENV).tfvars
+	@terraform apply -auto-approve -target module.network -var-file workspace-variables/$(ENV).tfvars 
 
 infra: network
 	@echo "Builds infrastructure for OpenShift in $(ENV)"
-	@terraform apply -target module.infrastructure -var-file workspace-variables/$(ENV).tfvars
+	@terraform apply -auto-approve -target module.infra -var-file workspace-variables/$(ENV).tfvars
 
 domain: infra
 	@echo "Builds domain zone for OpenShift in $(ENV)"
-	@terraform apply -target module.domain -var-file workspace-variables/$(ENV).tfvars
+	@terraform apply -auto-approve -target module.domain -var-file workspace-variables/$(ENV).tfvars
 
 rds_cluster:
 	@echo "Builds rds_cluster zone for OpenShift in $(ENV)"
@@ -77,28 +77,28 @@ elasticache_cluster:
 
 openshift:
 	@echo "Install OpenShift in $(ENV)"
-	@terraform apply -target module.openshift -var-file workspace-variables/$(ENV).tfvars
+	@terraform apply -auto-approve -target module.openshift -var-file workspace-variables/$(ENV).tfvars
 
-destroy: destory-network destory-infra destroy-domain destroy-rds_cluster destroy-elasticache_cluster
+destroy: destroy-elasticache_cluster destroy-rds_cluster destroy-domain destroy-infra destroy-network 
 
-destory-network: 
+destroy-network: 
 	@echo "Destroy platform network resources ..."
-	@terraform apply -target module.network -var-file workspace-variables/$(ENV).tfvars
+	@terraform destroy -force -target module.network -var-file workspace-variables/$(ENV).tfvars
 
-destory-infra: network
-	@echo "Destroy platform network resources ..."
-	@terraform apply -target module.infrastructure -var-file workspace-variables/$(ENV).tfvars
+destroy-infra: 
+	@echo "Destroy platform infra resources ..."
+	@terraform destroy -force -target module.infra -var-file workspace-variables/$(ENV).tfvars
 
-destory-domain: infra
-	@echo "Destroy platform network resources ..."
-	@terraform apply -target module.domain -var-file workspace-variables/$(ENV).tfvars
+destroy-domain: 
+	@echo "Destroy platform domain resources ..."
+	@terraform destroy -force -target module.domain -var-file workspace-variables/$(ENV).tfvars
 
-destory-rds_cluster:
-	@echo "Destroy platform network resources ..."
-	@terraform apply -target module.rds_cluster -var-file workspace-variables/$(ENV).tfvars
+destroy-rds_cluster:
+	@echo "Destroy platform rds_cluster resources ..."
+	@terraform destroy -force -target module.rds_cluster -var-file workspace-variables/$(ENV).tfvars
 
-destory-elasticache_cluster:
-	@echo "Destroy platform network resources ..."
-	@terraform apply -target module.elasticache_cluster -var-file workspace-variables/$(ENV).tfvars
+destroy-elasticache_cluster:
+	@echo "Destroy platform elasticache_cluster resources ..."
+	@terraform destroy -force -target module.elasticache_cluster -var-file workspace-variables/$(ENV).tfvars
 
 

@@ -18,6 +18,16 @@ resource "null_resource" "openshift_applier" {
     destination = "~/openshift-applier.sh"
   }
 
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x ~/openshift-applier.sh",
+      "sh ~/deploy-cluster.sh",
+    ]
+
+    #"tmux new-session -d -s deploycluster ~/deploy-cluster.sh",
+    #"sleep 1",                                                  # https://stackoverflow.com/questions/36207752/how-can-i-start-a-remote-service-using-terraform-provisioning
+  }
+
   connection {
     type        = "ssh"
     user        = "${var.bastion_ssh_user}"

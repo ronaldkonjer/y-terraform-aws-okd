@@ -1,20 +1,20 @@
 ---
-# defaults file for oc-cg-ldap-groups
+# defaults file for oc-y-ldap-groups
 
 # defaults for create-ldap-groups
-oc_cg_ldap_groups_main_dir: "/etc"
-oc_cg_ldap_groups_path: "{{ oc_cg_ldap_groups_main_dir }}/ldap"
-oc_cg_ldap_groups_config_filename: "config.yml"
-oc_cg_ldap_groups_whitelist_filename: "whitelist.yml"
-oc_cg_ldap_groups_blacklist_filename: "blacklist.yml"
+oc_y_ldap_groups_main_dir: "/etc"
+oc_y_ldap_groups_path: "{{ oc_y_ldap_groups_main_dir }}/ldap"
+oc_y_ldap_groups_config_filename: "config.yml"
+oc_y_ldap_groups_whitelist_filename: "whitelist.yml"
+oc_y_ldap_groups_blacklist_filename: "blacklist.yml"
 
-oc_cg_ldap_groups_prod_front_namespace: "prod-cg-front"
-oc_cg_ldap_groups_stage_front_namespace: "stage-cg-front"
-oc_cg_ldap_groups_default_namespace: "default"
-oc_cg_ldap_groups_grafana_namespace: "openshift-grafana"
-oc_cg_ldap_groups_logging_namespace: "logging"
+oc_y_ldap_groups_prod_front_namespace: "prod-y"
+oc_y_ldap_groups_stage_front_namespace: "stage-y"
+oc_y_ldap_groups_default_namespace: "default"
+oc_y_ldap_groups_grafana_namespace: "openshift-grafana"
+oc_y_ldap_groups_logging_namespace: "logging"
 
-oc_cg_ldap_groups_cg_namespaces: "[{{oc_cg_ldap_groups_prod_front_namespace}},{{oc_cg_ldap_groups_stage_front_namespace}}, {{oc_cg_ldap_groups_default_namespace}},{{oc_cg_ldap_groups_grafana_namespace}},{{oc_cg_ldap_groups_logging_namespace}}]"
+oc_y_ldap_groups_y_namespaces: "[{{oc_y_ldap_groups_prod_front_namespace}},{{oc_y_ldap_groups_stage_front_namespace}}, {{oc_y_ldap_groups_default_namespace}},{{oc_y_ldap_groups_grafana_namespace}},{{oc_y_ldap_groups_logging_namespace}}]"
 
-oc_cg_ldap_groups_admin_groupname: "openshift-admin"
-oc_cg_ldap_groups_user_groupname: "openshift"
+oc_y_ldap_groups_admin_groupname: "openshift-admin"
+oc_y_ldap_groups_user_groupname: "openshift"

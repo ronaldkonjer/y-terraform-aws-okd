@@ -1,13 +1,13 @@
 ---
-# tasks file for oc-cg-ldap-groups
+# tasks file for oc-y-ldap-groups
 - name: Check that the ldap dir exists
   stat:
-    path: "{{ oc_cg_ldap_groups_path }}"
+    path: "{{ oc_y_ldap_groups_path }}"
   register: result
 
 - name: Sync ldap groups
   command: >
-    {{ openshift_client_binary }} adm groups sync --whitelist="{{ oc_cg_ldap_groups_path }}/{{ oc_cg_ldap_groups_whitelist_filename }}" --sync-config="{{ oc_cg_ldap_groups_path }}/{{ oc_cg_ldap_groups_config_filename }}" --confirm
+    {{ openshift_client_binary }} adm groups sync --whitelist="{{ oc_y_ldap_groups_path }}/{{ oc_y_ldap_groups_whitelist_filename }}" --sync-config="{{ oc_y_ldap_groups_path }}/{{ oc_y_ldap_groups_config_filename }}" --confirm
   when: result.stat.exists == true and result.stat.isdir == true
 
 - name: Configure LDAP sync cron job
@@ -16,7 +16,7 @@
     user: root
     cron_file: openshift_ldapsync
     special_time: daily
-    job: '{{ openshift_client_binary }} adm groups sync --whitelist="{{ oc_cg_ldap_groups_path }}/{{ oc_cg_ldap_groups_whitelist_filename }}" --sync-config="{{ oc_cg_ldap_groups_path }}/{{ oc_cg_ldap_groups_config_filename }}" --confirm >/dev/null'
+    job: '{{ openshift_client_binary }} adm groups sync --whitelist="{{ oc_y_ldap_groups_path }}/{{ oc_y_ldap_groups_whitelist_filename }}" --sync-config="{{ oc_y_ldap_groups_path }}/{{ oc_y_ldap_groups_config_filename }}" --confirm >/dev/null'
 
 - name: Assign cluster policy to ldap group openshift-admin
   command: >
@@ -26,12 +26,12 @@
 
 - name: Assign policy to ldap group openshift stage
   command: >
-    {{ openshift_client_binary }} adm policy add-role-to-group admin openshift -n stage-cg-front
+    {{ openshift_client_binary }} adm policy add-role-to-group admin openshift -n stage-y
   when: result.stat.exists == true and result.stat.isdir == true
 
 - name: Assign policy to ldap group openshift prod
   command: >
-    {{ openshift_client_binary }} adm policy add-role-to-group admin openshift -n prod-cg-front
+    {{ openshift_client_binary }} adm policy add-role-to-group admin openshift -n prod-y
   when: result.stat.exists == true and result.stat.isdir == true
 
 # Assign admin policy to ldap openshift-admin group
@@ -40,7 +40,7 @@
     state: present
     resource_kind: cluster-role
     resource_name: cluster-admin
-    group: "{{ oc_cg_ldap_groups_admin_groupname }}"
+    group: "{{ oc_y_ldap_groups_admin_groupname }}"
   when: result.stat.exists == true and result.stat.isdir == true
 
 - debug:

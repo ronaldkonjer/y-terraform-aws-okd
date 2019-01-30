@@ -1,23 +1,23 @@
 ---
-# defaults file for oc-cg-cluster-setup
+# defaults file for oc-y-cluster-setup
 
 # default values for cg-cluster
-oc_cg_cluster_setup_service_groupname: "openshift"
-oc_cg_cluster_setup_deploy_serviceaccount_name: "jenkins"
+oc_y_cluster_setup_service_groupname: "openshift"
+oc_y_cluster_setup_deploy_serviceaccount_name: "jenkins"
 
 # default values for prod frontend
-oc_cg_cluster_setup_prod_front_namespace: "prod-cg-front"
-oc_cg_cluster_setup_prod_front_displayname: "CompareGroup Frontend - Production"
+oc_y_cluster_setup_prod_front_namespace: "prod-y"
+oc_y_cluster_setup_prod_front_displayname: "Hybris - Production"
 
-oc_cg_cluster_setup_prod_front_serviceaccount_annotations: []
+oc_y_cluster_setup_prod_front_serviceaccount_annotations: []
 
 # default values for stage frontend
-oc_cg_cluster_setup_stage_front_namespace: "stage-cg-front"
-oc_cg_cluster_setup_stage_front_displayname: "CompareGroup Frontend - Staging"
+oc_y_cluster_setup_stage_front_namespace: "stage-y"
+oc_y_cluster_setup_stage_front_displayname: "Hybris - Staging"
 
-oc_cg_cluster_setup_stage_front_serviceaccount_annotations: []
+oc_y_cluster_setup_stage_front_serviceaccount_annotations: []
 
-oc_cg_cluster_setup_nexus_secret_name: "cg-nexus3"
+#oc_y_cluster_setup_nexus_secret_name: "cg-nexus3"
 
-oc_cg_cluster_setup_networkpolicy_default_deny_filename: "np-default-deny"
-oc_cg_cluster_setup_networkpolicy_default_deny_name: "default-deny"
+oc_y_cluster_setup_networkpolicy_default_deny_filename: "np-default-deny"
+oc_y_cluster_setup_networkpolicy_default_deny_name: "default-deny"

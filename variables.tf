@@ -111,3 +111,11 @@ variable "platform_domain_administrator_email" {
 variable "route53_zone_public_id" {
   default = "ZE8PQ2NX2YNDL"
 }
+
+variable "openshift_cluster_admin_users" {
+  type = "list"
+}
+
+variable "openshift_master_htpasswd_users_vault" {
+  type = "list"
+}

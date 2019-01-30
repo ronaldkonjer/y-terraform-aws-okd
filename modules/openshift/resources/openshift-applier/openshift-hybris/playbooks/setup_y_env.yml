@@ -1,13 +1,6 @@
 ---
 - import_playbook: /usr/share/ansible/openshift-ansible/playbooks/init/main.yml
-# Setup CompareGroup Cluster
+# Setup Hybris Cluster
 - import_playbook: oc-y-playbooks/oc-y-cluster-setup/private/config.yml
-# Setup Comparegroup Loadbalancer config
-#- import_playbook: oc-y-firewall/private/config.yml
-# Synchonize LDAP Groups
-#- import_playbook: oc-y-ldap-groups/private/config.yml
-# Setup non-ldap users
-#- import_playbook: oc-y-policies/private/config.yml
 # Create Ops-View project
 - import_playbook: oc-y-playbooks/oc-y-ops-view/private/config.yml
-# Create Openshift_Grafana Project

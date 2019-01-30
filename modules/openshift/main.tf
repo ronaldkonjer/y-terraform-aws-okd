@@ -17,9 +17,16 @@ resource "null_resource" "main" {
   provisioner "remote-exec" {
     inline = [
       "chmod +x ~/deploy-cluster.sh",
-      "tmux new-session -d -s deploycluster ~/deploy-cluster.sh",
-      "sleep 1",                                                  # https://stackoverflow.com/questions/36207752/how-can-i-start-a-remote-service-using-terraform-provisioning
+      "sh ~/deploy-cluster.sh",
     ]
+
+    # "nohup sh ~/deploy-cluster.sh &"
+    #"tmux new-session -d -s deploycluster ~/deploy-cluster.sh",
+
+    #"sleep 1",                                                  # https://stackoverflow.com/questions/36207752/how-can-i-start-a-remote-service-using-terraform-provisioning
+    #"tmux attach-session -t deploycluster",
+
+    #"sleep 1",                                                  # https://stackoverflow.com/questions/36207752/how-can-i-start-a-remote-service-using-terraform-provisioning
   }
 
   connection {

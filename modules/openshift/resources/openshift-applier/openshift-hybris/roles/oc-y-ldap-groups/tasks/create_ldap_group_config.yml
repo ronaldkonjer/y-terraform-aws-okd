@@ -1,7 +1,7 @@
 - name: Deploy ldap group sync configuration files
   copy:
     src: "{{ openshift_ldap_group_config_file }}"
-    dest: "{{ oc_cg_ldap_groups_main_dir }}"
+    dest: "{{ oc_y_ldap_groups_main_dir }}"
     owner: root
     group: root
     mode: 0644

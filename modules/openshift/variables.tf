@@ -54,3 +54,13 @@ variable "public_certificate_intermediate_pem" {
 }
 
 variable "platform_vpc_id" {}
+
+# todo move to workspace variables
+variable "openshift_cluster_admin_users" {
+  type    = "list"
+  default = ["admin", "developer", "ronald.konjer"]
+}
+
+variable "openshift_master_htpasswd_users_vault" {
+  type = "list"
+}

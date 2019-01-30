@@ -2,7 +2,7 @@
   "parameter": [
 	{
 	  "name": "env",
-	  "value": "prod-cg-front"
+	  "value": "prod-y"
 	}
   ]
 }

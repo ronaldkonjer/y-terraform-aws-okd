@@ -5,8 +5,8 @@
   fail: msg="{{ item }} is not defined"
   when: not {{ item }}
   with_items:
-  - oc_cg_ldap_groups_main_dir
-  - oc_cg_ldap_groups_path
-  - oc_cg_ldap_groups_config_filename
-  - oc_cg_ldap_groups_whitelist_filename
-  - oc_cg_ldap_groups_blacklist_filename
+  - oc_y_ldap_groups_main_dir
+  - oc_y_ldap_groups_path
+  - oc_y_ldap_groups_config_filename
+  - oc_y_ldap_groups_whitelist_filename
+  - oc_y_ldap_groups_blacklist_filename

@@ -13,7 +13,7 @@
 - name: OpenShift Hybris Cluster Setup
   hosts: oo_first_master
   roles:
-  - { role: oc_y_roles/oc-y-cluster-setup, tags: 'cluster-setup' }
+  - { role: roles/oc-y-cluster-setup, tags: 'cluster-setup' }
 
 - name: OpenShift Hybris Cluster Setup End
   hosts: all
@@ -23,6 +23,6 @@
     run_once: true
     set_stats:
       data:
-        installer_phase_cg_setup:
+        installer_phase_y_setup:
           status: "Complete"
           end: "{{ lookup('pipe', 'date +%Y%m%d%H%M%SZ') }}"

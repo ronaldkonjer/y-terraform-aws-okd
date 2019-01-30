@@ -3,7 +3,7 @@ apiVersion: apps.openshift.io/v1
 kind: DeploymentConfig
 metadata:
   labels:
-    provider: cg
+    provider: yokd
     project: configmapcontroller
     app: openshift-core
     group: eu.comparegroup.origin
@@ -14,7 +14,7 @@ spec:
   revisionHistoryLimit: 2
   selector:
     project: configmapcontroller
-    provider: cg
+    provider: yokd
     app: openshift-core
     group: eu.comparegroup.origin
   strategy:
@@ -24,7 +24,7 @@ spec:
   template:
     metadata:
       labels:
-        provider: cg
+        provider: yokd
         project: configmapcontroller
         app: openshift-core
         group: eu.comparegroup.origin

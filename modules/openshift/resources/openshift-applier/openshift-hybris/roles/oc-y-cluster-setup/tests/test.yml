@@ -2,4 +2,4 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - oc-cg-cluster-setup
+    - oc-y-cluster-setup

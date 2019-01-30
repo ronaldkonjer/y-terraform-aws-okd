@@ -153,4 +153,6 @@ module "openshift" {
 
   platform_domain = "${var.platform_domain}"
   platform_vpc_id = "${module.network.platform_vpc_id}"
+  openshift_cluster_admin_users         = "${var.openshift_cluster_admin_users}"
+  openshift_master_htpasswd_users_vault = "${var.openshift_master_htpasswd_users_vault}"
 }

@@ -5,9 +5,9 @@
   fail: msg="{{ item }} is not defined"
   when: not {{ item }}
   with_items:
-  - oc_cg_cluster_setup_service_groupname
-  - oc_cg_cluster_setup_deploy_serviceaccount_name
-  - oc_cg_cluster_setup_prod_front_namespace
-  - oc_cg_cluster_setup_prod_front_displayname
-  - oc_cg_cluster_setup_stage_front_namespace
-  - oc_cg_cluster_setup_stage_front_displayname
+  - oc_y_cluster_setup_service_groupname
+  - oc_y_cluster_setup_deploy_serviceaccount_name
+  - oc_y_cluster_setup_prod_front_namespace
+  - oc_y_cluster_setup_prod_front_displayname
+  - oc_y_cluster_setup_stage_front_namespace
+  - oc_y_cluster_setup_stage_front_displayname

@@ -19,7 +19,7 @@
     user: "{{ item }}"
     resource_kind: role
     resource_name: edit
-    namespace: stage-cg-front
+    namespace: stage-y
     state: present
   with_items:
   - "{{ openshift_view_role_users }}"
@@ -30,7 +30,7 @@
     user: "{{ item }}"
     resource_kind: role
     resource_name: edit
-    namespace: prod-cg-front
+    namespace: prod-y
     state: present
   with_items:
   - "{{ openshift_view_role_users }}"

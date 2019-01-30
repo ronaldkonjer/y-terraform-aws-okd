@@ -1,28 +1,29 @@
-- name: OpenShift Ops View Project Setup Start
+---
+- name: OpenShift Compare Group Policies Provisioning Start
   hosts: all
   gather_facts: false
   tasks:
-  - name: Set Ops View Project Setup 'In Progress'
+  - name: Set Policies Provisioning 'In Progress'
     run_once: true
     set_stats:
       data:
-        installer_phase_y_setup:
+        installer_phase_y_policies:
           status: "In Progress"
           start: "{{ lookup('pipe', 'date +%Y%m%d%H%M%SZ') }}"
 
-- name: OpenShift Ops View Project Setup
+- name: OpenShift Compare Group Policies Provisioning
   hosts: oo_first_master
   roles:
-  - { role: roles/oc-y-ops-view, tags: 'ops-view' }
+  - { role: roles/oc-y-policies, tags: 'policies' }
 
-- name: OpenShift Ops View Project Setup End
+- name: OpenShift Compare Group Policies Provisioning End
   hosts: all
   gather_facts: false
   tasks:
-  - name: Set Ops View Project Setup 'Complete'
+  - name: Set Policies Provisioning 'Complete'
     run_once: true
     set_stats:
       data:
-        installer_phase_y_setup:
+        installer_phase_y_policies:
           status: "Complete"
           end: "{{ lookup('pipe', 'date +%Y%m%d%H%M%SZ') }}"

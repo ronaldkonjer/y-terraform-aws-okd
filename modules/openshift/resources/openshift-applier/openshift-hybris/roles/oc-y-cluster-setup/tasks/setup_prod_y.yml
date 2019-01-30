@@ -1,76 +1,76 @@
 ---
-# tasks file for oc-cg-cluster-setup
+# tasks file for oc-y-cluster-setup
 
 # namespace
-- name: Add CompareGroup frontend production project
+- name: Add Hybris production project
   oc_project:
     state: present
-    name: "{{ oc_cg_cluster_setup_prod_front_namespace }}"
-    display_name: "{{ oc_cg_cluster_setup_prod_front_displayname }}"
+    name: "{{ oc_y_cluster_setup_prod_front_namespace }}"
+    display_name: "{{ oc_y_cluster_setup_prod_front_displayname }}"
 
 # serviceaccount
-- name: create CompareGroup frontend production serviceaccount for origin group
+- name: create Hybris production serviceaccount for origin group
   oc_serviceaccount:
     state: present
-    name: "{{ oc_cg_cluster_setup_service_groupname }}"
-    namespace: "{{ oc_cg_cluster_setup_prod_front_namespace }}"
+    name: "{{ oc_y_cluster_setup_service_groupname }}"
+    namespace: "{{ oc_y_cluster_setup_prod_front_namespace }}"
   changed_when: no
 
 # serviceaccount deployer
-- name: create CompareGroup frontend production serviceaccount for deploy user
+- name: create Hybris production serviceaccount for deploy user
   oc_serviceaccount:
     state: present
-    name: "{{ oc_cg_cluster_setup_deploy_serviceaccount_name }}"
-    namespace: "{{ oc_cg_cluster_setup_prod_front_namespace }}"
+    name: "{{ oc_y_cluster_setup_deploy_serviceaccount_name }}"
+    namespace: "{{ oc_y_cluster_setup_prod_front_namespace }}"
   changed_when: no
 
 # TODO remove this when annotations are supported by oc_serviceaccount
 - name: annotate serviceaccount
   command: >
-    {{ openshift_client_binary }} annotate --overwrite -n {{ oc_cg_cluster_setup_prod_front_namespace }}
-    serviceaccount {{ oc_cg_cluster_setup_service_groupname }} {{ item }}
+    {{ openshift_client_binary }} annotate --overwrite -n {{ oc_y_cluster_setup_prod_front_namespace }}
+    serviceaccount {{ oc_y_cluster_setup_service_groupname }} {{ item }}
   with_items:
-    "{{ oc_cg_cluster_setup_prod_front_serviceaccount_annotations }}"
+    "{{ oc_y_cluster_setup_prod_front_serviceaccount_annotations }}"
 
 # create clusterrolebinding for ldap origin group serviceaccount
 - name: Set edit role permissions for origin group
   oc_adm_policy_group:
     state: present
-    namespace: "{{ oc_cg_cluster_setup_prod_front_namespace }}"
+    namespace: "{{ oc_y_cluster_setup_prod_front_namespace }}"
     resource_kind: role
     resource_name: edit
-    group: "{{ oc_cg_cluster_setup_service_groupname }}"
+    group: "{{ oc_y_cluster_setup_service_groupname }}"
 
 # create edit role for deploy user serviceaccount
 - name: Set edit permissions for deploy user
   oc_adm_policy_user:
     state: present
-    namespace: "{{ oc_cg_cluster_setup_prod_front_namespace }}"
+    namespace: "{{ oc_y_cluster_setup_prod_front_namespace }}"
     resource_kind: role
     resource_name: edit
-    user: "system:serviceaccount:{{ oc_cg_cluster_setup_prod_front_namespace }}:{{ oc_cg_cluster_setup_deploy_serviceaccount_name }}"
+    user: "system:serviceaccount:{{ oc_y_cluster_setup_prod_front_namespace }}:{{ oc_y_cluster_setup_deploy_serviceaccount_name }}"
 
 # create deployer role for deploy user serviceaccount
 - name: Set edit permissions for deploy user
   oc_adm_policy_user:
     state: present
-    namespace: "{{ oc_cg_cluster_setup_prod_front_namespace }}"
+    namespace: "{{ oc_y_cluster_setup_prod_front_namespace }}"
     resource_kind: role
     resource_name: system:deployer
-    user: "system:serviceaccount:{{ oc_cg_cluster_setup_prod_front_namespace }}:{{ oc_cg_cluster_setup_deploy_serviceaccount_name }}"
+    user: "system:serviceaccount:{{ oc_y_cluster_setup_prod_front_namespace }}:{{ oc_y_cluster_setup_deploy_serviceaccount_name }}"
 
 # create edit role for default serviceaccount
 - name: Set edit permissions for default serviceaccount
   oc_adm_policy_user:
     state: present
-    namespace: "{{ oc_cg_cluster_setup_prod_front_namespace }}"
+    namespace: "{{ oc_y_cluster_setup_prod_front_namespace }}"
     resource_kind: role
     resource_name: edit
-    user: "system:serviceaccount:{{ oc_cg_cluster_setup_prod_front_namespace }}:default"
+    user: "system:serviceaccount:{{ oc_y_cluster_setup_prod_front_namespace }}:default"
 
 
-- include_tasks: generate_nexus_secret.yml namespace={{ oc_cg_cluster_setup_prod_front_namespace }}
+#- include_tasks: generate_nexus_secret.yml namespace={{ oc_y_cluster_setup_prod_front_namespace }}
 
-- include_tasks: install_configmapcontroller.yml namespace={{ oc_cg_cluster_setup_prod_front_namespace }}
+- include_tasks: install_configmapcontroller.yml namespace={{ oc_y_cluster_setup_prod_front_namespace }}
 
-- include_tasks: generate_networkpolicies.yml namespace={{ oc_cg_cluster_setup_prod_front_namespace }}
+#- include_tasks: generate_networkpolicies.yml namespace={{ oc_y_cluster_setup_prod_front_namespace }}

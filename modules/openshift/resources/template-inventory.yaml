@@ -31,6 +31,21 @@ ${openshift_deployment_type == "openshift-enterprise" ? "#" : ""}    - {id: 'cen
     openshift_cloudprovider_region: ${aws_region}
     openshift_clusterid: ${platform_name}
     
+    debug_level: 4
+    openshift_cluster_admin_users: ${openshift_cluster_admin_users}
+    # openshift_cluster_admin_users:
+    # - admin
+    # - developer
+    # - ronald.konjer
+    openshift_master_htpasswd_users: "{{ openshift_master_htpasswd_users_vault }}"
+    #openshift_master_htpasswd_users: {'admin': '$apr1$YyojQy5/$NgR/7P7aLK9sn97hsfXAi0', 'developer': '$apr1$JVnHR/Mq$sQw1FssjC9a8zPlIkzZ4Q1', 'ronald.konjer': '$apr1$pxxi8wXc$bAZSJ8dV5BTZQtb1TCSnM'}
+    openshift_master_identity_providers:
+      - name: 'htpasswd_auth' 
+        mappingMethod: 'add' 
+        login: 'true'
+        challenge: 'true'
+        kind: 'HTPasswdPasswordIdentityProvider'
+        #filename: '/etc/origin/master/htpasswd'
 
     # Currently logging deployment is disabled by default, enable it by setting this
     openshift_logging_install_logging: true
@@ -140,8 +155,6 @@ ${openshift_deployment_type == "openshift-enterprise" ? "#" : ""}    - {id: 'cen
       - cpu=100m,memory=100Mi
     openshift_certificate_expiry_warning_days: 365
     openshift_master_admission_plugin_config: '{ "MutatingAdmissionWebhook": { "configuration": { "apiVersion": "apiserver.config.k8s.io/v1alpha1", "kubeConfigFile": "/etc/origin/master/admin.kubeconfig", "kind": "WebhookAdmission" } }, "ValidatingAdmissionWebhook": { "configuration": { "apiVersion": "apiserver.config.k8s.io/v1alpha1", "kubeConfigFile": "/etc/origin/master/admin.kubeconfig", "kind": "WebhookAdmission" } } }'
-    openshift_cluster_admin_users:
-    - admin
 ${openshift_deployment_type == "openshift-enterprise" ? "" : "#"}    oreg_auth_user: "${rhn_username}"
 ${openshift_deployment_type == "openshift-enterprise" ? "" : "#"}    oreg_auth_password: "${rhn_password}"
 ${openshift_deployment_type == "openshift-enterprise" ? "" : "#"}    openshift_additional_registry_credentials:

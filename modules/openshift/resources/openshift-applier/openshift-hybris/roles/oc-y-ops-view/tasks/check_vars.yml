@@ -5,7 +5,7 @@
   fail: msg="{{ item }} is not defined"
   when: not {{ item }}
   with_items:
-  - oc_cg_ops_view_project_namespace
-  - oc_cg_ops_view_project_displayname
-  - oc_cg_ops_view_serviceaccount_name
-  - oc_cg_ops_view_project_repos_url
+  - oc_y_ops_view_project_namespace
+  - oc_y_ops_view_project_displayname
+  - oc_y_ops_view_serviceaccount_name
+  - oc_y_ops_view_project_repos_url

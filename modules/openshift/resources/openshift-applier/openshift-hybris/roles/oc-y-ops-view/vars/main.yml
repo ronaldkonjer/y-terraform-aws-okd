@@ -1,4 +1,4 @@
 ---
-# vars file for oc-cg-ops-view
-oc_cg_ops_view_serviceaccount_name: "kube-ops-view"
-oc_cg_ops_view_project_repos_url: "https://raw.githubusercontent.com/raffaelespazzoli/kube-ops-view/ocp/deploy-openshift/kube-ops-view.yaml"
+# vars file for oc-y-ops-view
+oc_y_ops_view_serviceaccount_name: "kube-ops-view"
+oc_y_ops_view_project_repos_url: "https://raw.githubusercontent.com/raffaelespazzoli/kube-ops-view/ocp/deploy-openshift/kube-ops-view.yaml"
